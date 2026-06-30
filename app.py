@@ -276,22 +276,25 @@ three categories:
 - 🟡 **Standard** — moderate credit risk
 - 🔴 **Poor** — high credit risk
 
-### Pipeline Architecture
-```
+Pipeline Architecture
+'''
 Raw CSV → Preprocessing (CreditDataPreprocessor)
-        → Feature Engineering
-        → Model Training (LR / RF / GB)
+        → Feature Engineering (5 engineered ratio features)
+        → Model Training (LR / RF / HistGB / XGBoost / LightGBM)
+        → SMOTE Oversampling (training data only)
         → MLflow Experiment Tracking
-        → Best Model Serialisation (.pkl)
+        → Best Model Selection (by F1 Macro)
+        → Model Serialisation (.pkl)
         → Streamlit Web Inference
-```
-
+'''
 ### Model Performance
-| Model                | Accuracy | F1 Macro |
-|----------------------|----------|----------|
-| Logistic Regression  | ~72%     | ~69%     |
-| Random Forest        | ~80%     | ~77%     |
-| Gradient Boosting    | ~82%     | ~79%     |
+| Model                | Accuracy | F1 Macro | ROC AUC |
+|-----------------------|----------|----------|---------|
+| Logistic Regression  | ~58%     | ~0.57    | ~0.764  |
+| HistGradientBoosting | ~70%     | ~0.68    | ~0.851  |
+| XGBoost              | ~71%     | ~0.69    | ~0.854  |
+| Random Forest        | ~72%     | ~0.70    | ~0.868  |
+| LightGBM             | ~73%     | ~0.71    | ~0.868  |
 
 ### Deployment Stack (Local)
 - **Framework:** Streamlit
